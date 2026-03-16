@@ -8,6 +8,7 @@ import { usePrompts } from './hooks/usePrompts';
 
 import { RECORDED_VAULT_ASSETS } from './data/videoVaultAssets';
 import { Copy, Check, Download } from 'lucide-react';
+import CommandCenter from './components/CommandCenter';
 
 function VideoVault() {
   const [copiedId, setCopiedId] = useState(null);
@@ -135,6 +136,7 @@ function App() {
         {currentView === 'dashboard' && <Dashboard prompts={prompts} deletePrompt={deletePrompt} />}
         {currentView === 'voice' && <VoiceInput addPrompt={addPrompt} onSaved={() => setCurrentView('dashboard')} />}
         {currentView === 'vault' && <VideoVault />}
+        {currentView === 'command' && <CommandCenter />}
         {currentView === 'create' && !selectedCategory && (
           <CategorySelection onSelectCategory={setSelectedCategory} />
         )}
