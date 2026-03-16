@@ -1,8 +1,9 @@
-import { Home, Mic, Video } from 'lucide-react';
+import { Home, Mic, Video, Sparkles } from 'lucide-react';
 
 export default function Navigation({ currentView, setCurrentView }) {
   const navItems = [
     { id: 'dashboard', icon: Home, label: 'Prompts' },
+    { id: 'create', icon: Sparkles, label: 'Create' },
     { id: 'voice', icon: Mic, label: 'Dictate' },
     { id: 'vault', icon: Video, label: 'Vault' }
   ];
