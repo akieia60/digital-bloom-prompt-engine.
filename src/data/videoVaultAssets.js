@@ -105,6 +105,62 @@ export const RECORDED_VAULT_ASSETS = [
     prompt: "Animate the image. The charcoal-like rock continues to shatter in an epic slow-motion explosion. As the rock fragments drift away, the perfect, hyper-detailed diamond flower revealed beneath slowly rotates, brilliantly refracting the harsh spotlight into a thousand points of golden light."
   },
   {
+    id: "luxury_stiletto_1",
+    title: "Crystal Bloom Unfurl",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_crystal_bloom_unfurl.png",
+    prompt: "A crystal-encrusted stiletto heel sits on polished black marble. In ultra-slow motion, deep crimson roses begin blooming from inside the shoe, petals unfurling one by one. White orchids with gold-dusted edges emerge between the roses. Gold sparkle particles drift through the air like diamond dust. The crystals on the shoe catch the light and create tiny rainbow refractions. Camera slowly orbits the shoe. Cinematic luxury fashion film, dramatic side lighting, black background, 4K."
+  },
+  {
+    id: "luxury_stiletto_2",
+    title: "Rose Cascade",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_rose_cascade.png",
+    prompt: "Extreme close-up on a crystal stiletto high heel on a dark reflective surface. Roses in shades of deep red and blush pink slowly cascade out of the shoe opening, each petal catching golden light. Tiny gold leaf particles float weightlessly in the air. The crystals on the shoe shimmer and sparkle as the camera slowly pans upward. Luxury brand commercial aesthetic, shallow depth of field, bokeh highlights, magazine-quality lighting."
+  },
+  {
+    id: "luxury_stiletto_3",
+    title: "Fashion Meets Flora",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_fashion_meets_flora.png",
+    prompt: "A glamorous crystal stiletto sits alone on black velvet, lit by a single dramatic spotlight. Suddenly, lush flowers begin emerging — crimson roses, white orchids, purple peonies — filling and overflowing the shoe in elegant slow motion. Gold dust swirls around the arrangement. Petals gently fall and float. The lighting shifts from cool silver to warm gold. Ultra-luxury fashion commercial, cinematic 4K, dramatic and sensual mood."
+  },
+  {
+    id: "luxury_stiletto_4",
+    title: "Sparkle Loop",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_sparkle_loop.png",
+    prompt: "A crystal stiletto overflowing with red roses and white orchids on black marble. Subtle animation: gold sparkles drift through the air, crystals shimmer, light slowly shifts creating moving reflections. Dreamy, hypnotic loop. Luxury product showcase, 3-5 second seamless loop."
+  },
+  {
+    id: "luxury_stiletto_5",
+    title: "Petal Fall",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_petal_fall.png",
+    prompt: "Close-up of a crystal high heel filled with blooming roses. A few petals slowly detach and float downward in slow motion while gold dust particles drift upward. Dramatic dark background with warm rim lighting. Seamless looping video, 5 seconds, luxury brand aesthetic."
+  },
+  {
+    id: "luxury_stiletto_6",
+    title: "Glass Slipper",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_glass_slipper.png",
+    prompt: "A transparent glass stiletto heel on a black mirror surface, filled with an arrangement of black roses with gold-tipped petals. Gold butterflies slowly emerge from between the flowers. Dramatic spotlighting creates long shadows. Smoke wisps curl around the base. Ultra-luxury dark fantasy aesthetic, 4K cinematic."
+  },
+  {
+    id: "luxury_stiletto_7",
+    title: "Diamond Heel Row",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_diamond_heel_row.png",
+    prompt: "Multiple crystal stiletto heels arranged in a row, each containing different colored roses — one with deep red, one with pure white, one with black and gold. Camera dolly moves along the row revealing each shoe. Gold sparkle particles connect between them. Luxury fashion runway commercial, dramatic lighting, black background."
+  },
+  {
+    id: "luxury_stiletto_8",
+    title: "Bloom Explosion",
+    category: "Luxury",
+    imagePath: "/vault-assets/luxury_bloom_explosion.png",
+    prompt: "A single crystal stiletto on a dark pedestal. After a moment of stillness, flowers dramatically burst from the shoe top — roses, peonies, orchids, and wildflowers in rich jewel tones. Petals scatter in slow motion. Gold dust clouds expand outward. The crystal shoe catches every light. Cinematic slow-motion luxury advertisement, 4K."
+  },
+  {
     id: "general_1",
     title: "Golden Path",
     category: "General",
