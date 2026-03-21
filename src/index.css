@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Import luxury styling */
-@import './styles/luxury.css';
+
 
 @layer utilities {
   .glass {
@@ -86,3 +86,4 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, var(--gold-light), var(--gold-primary));
 }
+/* Fixed CSS import order */
