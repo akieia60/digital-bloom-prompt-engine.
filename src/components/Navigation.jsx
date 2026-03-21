@@ -1,10 +1,11 @@
-import { Home, Mic, Video, Sparkles, Terminal, Crown, Calendar, Church } from 'lucide-react';
+import { Home, Mic, Video, Sparkles, Terminal, Crown, Calendar, Church, PlayCircle, Bot } from 'lucide-react';
 
 export default function Navigation({ currentView, setCurrentView }) {
   const navItems = [
     { id: 'dashboard', icon: Home, label: 'Prompts' },
     { id: 'create', icon: Sparkles, label: 'Create' },
-    { id: 'reminders', icon: Calendar, label: 'Reminders' },
+    { id: 'generation', icon: PlayCircle, label: 'Live Gen' },
+    { id: 'monique', icon: Bot, label: 'Monique' },
     { id: 'subscription', icon: Crown, label: 'Plans' },
     { id: 'voice', icon: Mic, label: 'Dictate' },
     { id: 'vault', icon: Video, label: 'Vault' },

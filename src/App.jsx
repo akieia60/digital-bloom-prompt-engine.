@@ -7,6 +7,8 @@ import Customization from './components/Customization';
 import SubscriptionDashboard from './components/SubscriptionDashboard';
 import DateReminders from './components/DateReminders';
 import ChurchPartnership from './components/ChurchPartnership';
+import VideoGenerationDashboard from './components/VideoGenerationDashboard';
+import MoniqueChat from './components/MoniqueChat';
 import { usePrompts } from './hooks/usePrompts';
 
 import { RECORDED_VAULT_ASSETS } from './data/videoVaultAssets';
@@ -265,6 +267,8 @@ function App() {
         {currentView === 'voice' && <VoiceInput addPrompt={addPrompt} onSaved={() => setCurrentView('dashboard')} />}
         {currentView === 'vault' && <VideoVault />}
         {currentView === 'command' && <CommandCenter />}
+        {currentView === 'generation' && <VideoGenerationDashboard />}
+        {currentView === 'monique' && <MoniqueChat />}
         {currentView === 'subscription' && <SubscriptionDashboard />}
         {currentView === 'reminders' && <DateReminders />}
         {currentView === 'church' && <ChurchPartnership />}
