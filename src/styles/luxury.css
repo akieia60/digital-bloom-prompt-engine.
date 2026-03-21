@@ -1,0 +1,405 @@
+/* Digital Bloom Luxury Styling Enhancement */
+
+/* Import luxury fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Luxury color palette */
+:root {
+  /* Premium Gold Gradients */
+  --gold-primary: #d4af37;
+  --gold-light: #ffd700;
+  --gold-dark: #b8860b;
+  --gold-accent: #f4e4a1;
+  
+  /* Marble textures */
+  --marble-white: #f8f8f8;
+  --marble-cream: #faf8f3;
+  --marble-gray: #e8e6e1;
+  
+  /* Diamond sparkle */
+  --diamond-sparkle: #ffffff;
+  --diamond-glow: rgba(255, 255, 255, 0.8);
+  
+  /* Premium shadows */
+  --luxury-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --gold-glow: 0 0 30px rgba(212, 175, 55, 0.3);
+  --diamond-shine: 0 0 20px rgba(255, 255, 255, 0.6);
+  
+  /* Spiritual colors */
+  --cross-gold: #daa520;
+  --memorial-purple: #6b46c1;
+  --heavenly-blue: #3b82f6;
+}
+
+/* Luxury marble background patterns */
+.marble-texture {
+  background: linear-gradient(135deg, 
+    var(--marble-cream) 0%, 
+    var(--marble-white) 25%, 
+    var(--marble-gray) 50%, 
+    var(--marble-cream) 75%, 
+    var(--marble-white) 100%);
+  background-size: 400% 400%;
+  animation: marbleShift 15s ease-in-out infinite;
+}
+
+@keyframes marbleShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Enhanced glass morphism with luxury feel */
+.luxury-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 
+    var(--luxury-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0 0 1px rgba(212, 175, 55, 0.1);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent);
+  animation: shimmer 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: -100%; }
+}
+
+/* Gold trim enhancements */
+.gold-trim {
+  border: 3px solid;
+  border-image: linear-gradient(45deg, 
+    var(--gold-dark) 0%, 
+    var(--gold-light) 25%, 
+    var(--gold-primary) 50%, 
+    var(--gold-light) 75%, 
+    var(--gold-dark) 100%) 1;
+  position: relative;
+}
+
+.gold-trim::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid var(--gold-accent);
+  border-radius: inherit;
+  animation: goldPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes goldPulse {
+  0% { box-shadow: var(--gold-glow); }
+  100% { box-shadow: 0 0 60px rgba(212, 175, 55, 0.5); }
+}
+
+/* Diamond sparkle effects */
+.diamond-sparkle {
+  position: relative;
+  overflow: visible;
+}
+
+.diamond-sparkle::before,
+.diamond-sparkle::after {
+  content: '✦';
+  position: absolute;
+  color: var(--diamond-sparkle);
+  font-size: 12px;
+  text-shadow: var(--diamond-shine);
+  animation: sparkle 2s ease-in-out infinite;
+  z-index: 10;
+}
+
+.diamond-sparkle::before {
+  top: 10%;
+  right: 15%;
+  animation-delay: 0s;
+}
+
+.diamond-sparkle::after {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 1s;
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(0.8) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2) rotate(180deg); 
+  }
+}
+
+/* Luxury typography */
+.luxury-serif {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.luxury-script {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.luxury-sans {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Premium button styles */
+.luxury-button {
+  background: linear-gradient(135deg, 
+    var(--gold-primary) 0%, 
+    var(--gold-light) 50%, 
+    var(--gold-primary) 100%);
+  border: 2px solid var(--gold-dark);
+  color: #1a1a1a;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  padding: 16px 32px;
+  border-radius: 16px;
+  box-shadow: 
+    var(--luxury-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    var(--gold-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 40px rgba(212, 175, 55, 0.4);
+}
+
+.luxury-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Spiritual market elements */
+.cross-symbol {
+  position: relative;
+  display: inline-block;
+  color: var(--cross-gold);
+  text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+  animation: holyGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes holyGlow {
+  0% { text-shadow: 0 0 10px rgba(218, 165, 32, 0.5); }
+  100% { text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 30px rgba(218, 165, 32, 0.3); }
+}
+
+.memorial-card {
+  background: linear-gradient(135deg, 
+    rgba(107, 70, 193, 0.1) 0%, 
+    rgba(255, 255, 255, 0.9) 50%, 
+    rgba(107, 70, 193, 0.1) 100%);
+  border: 2px solid var(--memorial-purple);
+  box-shadow: 
+    0 10px 30px rgba(107, 70, 193, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.heavenly-birthday {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.1) 0%, 
+    rgba(255, 255, 255, 0.9) 50%, 
+    rgba(59, 130, 246, 0.1) 100%);
+  border: 2px solid var(--heavenly-blue);
+  box-shadow: 
+    0 10px 30px rgba(59, 130, 246, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Luxury loading animations */
+.luxury-loading {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+}
+
+.luxury-loading::before,
+.luxury-loading::after {
+  content: '';
+  position: absolute;
+  border: 3px solid var(--gold-primary);
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: luxurySpin 1.5s linear infinite;
+}
+
+.luxury-loading::before {
+  width: 60px;
+  height: 60px;
+  animation-duration: 1.5s;
+}
+
+.luxury-loading::after {
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  left: 10px;
+  animation-duration: 1s;
+  animation-direction: reverse;
+}
+
+@keyframes luxurySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Particle effects for premium feel */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--gold-accent);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+  box-shadow: 0 0 6px var(--gold-accent);
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0) rotate(0deg); 
+    opacity: 0.3; 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(180deg); 
+    opacity: 1; 
+  }
+}
+
+/* Mobile optimization for luxury feel */
+@media (max-width: 768px) {
+  .luxury-glass {
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+  }
+  
+  .luxury-button {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  
+  .diamond-sparkle::before,
+  .diamond-sparkle::after {
+    font-size: 10px;
+  }
+  
+  .luxury-loading {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .luxury-loading::before {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .luxury-loading::after {
+    width: 35px;
+    height: 35px;
+    top: 7.5px;
+    left: 7.5px;
+  }
+}
+
+/* Enhanced category styles for spiritual market */
+.category-dearly-departed {
+  background: linear-gradient(135deg, 
+    rgba(107, 70, 193, 0.15) 0%, 
+    rgba(255, 255, 255, 0.95) 50%, 
+    rgba(107, 70, 193, 0.15) 100%);
+  border: 2px solid rgba(107, 70, 193, 0.3);
+}
+
+.category-dearly-departed::before {
+  content: '✟';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 20px;
+  color: var(--memorial-purple);
+  text-shadow: 0 0 10px rgba(107, 70, 193, 0.5);
+  animation: holyGlow 3s ease-in-out infinite alternate;
+}
+
+.category-heavenly-birthday::before {
+  content: '✟ ✨';
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 16px;
+  color: var(--heavenly-blue);
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  animation: holyGlow 3s ease-in-out infinite alternate;
+}
+
+/* Premium toast notifications */
+.luxury-toast {
+  background: var(--luxury-glass);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: #1a1a1a;
+  box-shadow: var(--luxury-shadow);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  0% { 
+    transform: translateY(-100%) scale(0.9); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+  }
+}
