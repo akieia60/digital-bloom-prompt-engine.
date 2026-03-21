@@ -1,30 +1,48 @@
-import { Home, Mic, Video, Sparkles, Terminal } from 'lucide-react';
+import { Home, Mic, Video, Sparkles, Terminal, Crown, Calendar, Church } from 'lucide-react';
 
 export default function Navigation({ currentView, setCurrentView }) {
   const navItems = [
     { id: 'dashboard', icon: Home, label: 'Prompts' },
     { id: 'create', icon: Sparkles, label: 'Create' },
+    { id: 'reminders', icon: Calendar, label: 'Reminders' },
+    { id: 'subscription', icon: Crown, label: 'Plans' },
     { id: 'voice', icon: Mic, label: 'Dictate' },
     { id: 'vault', icon: Video, label: 'Vault' },
+    { id: 'church', icon: Church, label: 'Church' },
     { id: 'command', icon: Terminal, label: 'Tasks' }
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 pb-safe z-50">
-      <div className="flex justify-around items-center h-16">
-        {navItems.map(({ id, icon: Icon, label }) => (
-          <button
-            key={id}
-            onClick={() => setCurrentView(id)}
-            className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${
-              currentView === id ? 'text-amber-500' : 'text-gray-500'
-            }`}
-          >
-            <Icon size={24} className={currentView === id ? 'animate-bounce' : ''} />
-            <span className="text-xs font-medium">{label}</span>
-          </button>
-        ))}
+    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-white/40 z-50 backdrop-blur-2xl overflow-x-auto">
+      <div className="flex justify-between items-center h-16 px-2 min-w-max">
+        {navItems.map(({ id, icon: Icon, label }) => {
+          const isActive = currentView === id;
+          return (
+            <button
+              key={id}
+              onClick={() => setCurrentView(id)}
+              className={`flex flex-col items-center justify-center px-3 py-2 min-w-[60px] space-y-1 transition-all duration-300 hover:scale-105 relative ${
+                isActive 
+                  ? 'text-amber-600 transform scale-110' 
+                  : 'text-gray-600 hover:text-amber-500'
+              }`}
+            >
+              {isActive && (
+                <div className="absolute -top-1 w-8 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+              )}
+              
+              <Icon size={20} className="transition-all duration-300" />
+              
+              <span className={`text-xs font-medium transition-all duration-300 ${
+                isActive ? 'font-semibold' : 'font-normal'
+              }`}>
+                {label}
+              </span>
+            </button>
+          );
+        })}
       </div>
+
     </nav>
   );
 }
