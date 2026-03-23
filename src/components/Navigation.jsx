@@ -1,4 +1,4 @@
-import { Home, Mic, Video, Sparkles, Terminal, Crown, Church, PlayCircle, Bot, Library, Scissors } from 'lucide-react';
+import { Home, Mic, Video, Sparkles, Terminal, Crown, Church, PlayCircle, Bot, Library, Scissors, LayoutDashboard } from 'lucide-react';
 
 export default function Navigation({ currentView, setCurrentView }) {
   const navItems = [
@@ -12,7 +12,8 @@ export default function Navigation({ currentView, setCurrentView }) {
     { id: 'voice', icon: Mic, label: 'Dictate' },
     { id: 'vault', icon: Video, label: 'Vault' },
     { id: 'church', icon: Church, label: 'Church' },
-    { id: 'command', icon: Terminal, label: 'Tasks' }
+    { id: 'command', icon: Terminal, label: 'Tasks' },
+    { id: 'command-center', icon: LayoutDashboard, label: 'Command' }
   ];
 
   return (
