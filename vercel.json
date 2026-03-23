@@ -1,16 +1,16 @@
 {
   "functions": {
     "api/stripe-webhook.js": {
-      "runtime": "nodejs20.x"
+      "maxDuration": 30
     },
     "api/create-checkout.js": {
-      "runtime": "nodejs20.x"
+      "maxDuration": 30
     },
     "api/create-portal.js": {
-      "runtime": "nodejs20.x"
+      "maxDuration": 30
     },
     "api/process-reminders.js": {
-      "runtime": "nodejs20.x"
+      "maxDuration": 30
     }
   },
   "crons": [
