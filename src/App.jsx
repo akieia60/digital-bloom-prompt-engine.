@@ -9,6 +9,7 @@ import DateReminders from './components/DateReminders';
 import ChurchPartnership from './components/ChurchPartnership';
 import VideoGenerationDashboard from './components/VideoGenerationDashboard';
 import MoniqueChat from './components/MoniqueChat';
+import VideoLibrary from './components/VideoLibrary';
 import { usePrompts } from './hooks/usePrompts';
 
 import { RECORDED_VAULT_ASSETS } from './data/videoVaultAssets';
@@ -269,6 +270,7 @@ function App() {
         {currentView === 'command' && <CommandCenter />}
         {currentView === 'generation' && <VideoGenerationDashboard />}
         {currentView === 'monique' && <MoniqueChat />}
+        {currentView === 'library' && <VideoLibrary />}
         {currentView === 'subscription' && <SubscriptionDashboard />}
         {currentView === 'reminders' && <DateReminders />}
         {currentView === 'church' && <ChurchPartnership />}
