@@ -15,6 +15,7 @@ import { usePrompts } from './hooks/usePrompts';
 import { RECORDED_VAULT_ASSETS } from './data/videoVaultAssets';
 import { Copy, Check, Download, Crown, Star, Sparkles, Cross } from 'lucide-react';
 import CommandCenter from './components/CommandCenter';
+import PromptSplitter from './components/PromptSplitter';
 
 function VideoVault() {
   const [copiedId, setCopiedId] = useState(null);
@@ -274,6 +275,7 @@ function App() {
         {currentView === 'subscription' && <SubscriptionDashboard />}
         {currentView === 'reminders' && <DateReminders />}
         {currentView === 'church' && <ChurchPartnership />}
+        {currentView === 'splitter' && <PromptSplitter />}
         {currentView === 'create' && !selectedCategory && (
           <CategorySelection onSelectCategory={setSelectedCategory} />
         )}
