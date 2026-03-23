@@ -15,6 +15,7 @@ import { usePrompts } from './hooks/usePrompts';
 import { RECORDED_VAULT_ASSETS } from './data/videoVaultAssets';
 import { Copy, Check, Download, Crown, Star, Sparkles, Cross } from 'lucide-react';
 import CommandCenter from './components/CommandCenter';
+import TaskBoard from './components/TaskBoard';
 import PromptSplitter from './components/PromptSplitter';
 
 function VideoVault() {
@@ -268,7 +269,8 @@ function App() {
         {currentView === 'dashboard' && <Dashboard prompts={prompts} deletePrompt={deletePrompt} />}
         {currentView === 'voice' && <VoiceInput addPrompt={addPrompt} onSaved={() => setCurrentView('dashboard')} />}
         {currentView === 'vault' && <VideoVault />}
-        {currentView === 'command' && <CommandCenter />}
+        {currentView === 'command' && <TaskBoard />}
+        {currentView === 'command-center' && <CommandCenter />}
         {currentView === 'generation' && <VideoGenerationDashboard />}
         {currentView === 'monique' && <MoniqueChat />}
         {currentView === 'library' && <VideoLibrary />}
