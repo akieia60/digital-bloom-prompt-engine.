@@ -22,11 +22,7 @@ const INITIAL_MESSAGE = {
   timestamp: new Date().toLocaleTimeString(),
 };
 
-const FALLBACK_RESPONSES = [
-  'Monique chat is connected, but the live response failed. I need the command-center AI route checked so I can answer here properly.',
-  'The Monique command-center reply failed upstream. I can fix it, but this screen should not be trusted for final answers until that route is healthy.',
-  'The live Monique reply did not come through. This is a fallback notice, not a real assistant answer.',
-];
+const LIVE_CHAT_FAILURE_MESSAGE = 'Live Monique chat is not responding yet. This screen is still not connected to your real assistant brain, so I need to finish repairing the command-center chat route.';
 
 function cleanForSpeech(text) {
   return text
@@ -57,8 +53,8 @@ async function requestChatReply(input) {
     const payload = await response.json();
     return payload?.reply?.trim() || null;
   } catch (error) {
-    console.error('Monique chat fallback triggered:', error);
-    return FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)];
+    console.error('Monique live chat failed:', error);
+    return LIVE_CHAT_FAILURE_MESSAGE;
   }
 }
 
