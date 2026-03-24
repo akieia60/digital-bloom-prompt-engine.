@@ -27,11 +27,11 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         text: cleanText,
-        model_id: process.env.ELEVENLABS_MODEL_ID || 'eleven_turbo_v2_5',
+        model_id: process.env.ELEVENLABS_MODEL_ID || 'eleven_multilingual_v2',
         voice_settings: {
-          stability: 0.6,
-          similarity_boost: 0.8,
-          style: 0.3,
+          stability: 0.42,
+          similarity_boost: 0.9,
+          style: 0.08,
           use_speaker_boost: true,
         },
       }),
