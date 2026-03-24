@@ -26,8 +26,9 @@ export default async function handler(req, res) {
   }
 
   if (!apiKey) {
-    return res.status(200).json({
-      reply: 'I heard you. The live AI key is not connected yet, but the voice UI is ready. Add OPENAI_API_KEY in Vercel and I can answer here directly.',
+    return res.status(503).json({
+      error: 'Monique live chat is not configured',
+      code: 'OPENAI_API_KEY_MISSING',
     });
   }
 
@@ -52,6 +53,7 @@ export default async function handler(req, res) {
       const errorText = await response.text();
       return res.status(response.status).json({
         error: 'Monique live chat failed',
+        code: 'OPENAI_UPSTREAM_ERROR',
         details: errorText || 'Chat request failed',
       });
     }
@@ -65,6 +67,7 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({
       error: 'Monique live chat failed',
+      code: 'MONIQUE_CHAT_RUNTIME_ERROR',
       details: error.message || 'Chat request failed',
     });
   }
