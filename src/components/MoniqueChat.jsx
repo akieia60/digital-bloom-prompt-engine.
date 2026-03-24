@@ -23,10 +23,9 @@ const INITIAL_MESSAGE = {
 };
 
 const FALLBACK_RESPONSES = [
-  'Got it. I can help you turn that into the next clean move for Digital Bloom.',
-  'Understood. I can map that into prompt logic, product logic, or execution steps — whichever you need.',
-  'I’m with you. Send the rough thought exactly how it comes out, and I’ll clean it up into something usable.',
-  'That makes sense. I can help you decide what belongs in the prompt library, command center, or storefront.',
+  'Monique chat is connected, but the live response failed. I need the command-center AI route checked so I can answer here properly.',
+  'The Monique command-center reply failed upstream. I can fix it, but this screen should not be trusted for final answers until that route is healthy.',
+  'The live Monique reply did not come through. This is a fallback notice, not a real assistant answer.',
 ];
 
 function cleanForSpeech(text) {
@@ -51,7 +50,8 @@ async function requestChatReply(input) {
 
     if (!response.ok) {
       const payload = await response.json().catch(() => ({}));
-      throw new Error(payload?.error || 'Chat request failed');
+      const details = payload?.details ? ` ${payload.details}` : '';
+      throw new Error((payload?.error || 'Chat request failed') + details);
     }
 
     const payload = await response.json();

@@ -50,7 +50,10 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      return res.status(response.status).json({ error: errorText || 'Chat request failed' });
+      return res.status(response.status).json({
+        error: 'Monique live chat failed',
+        details: errorText || 'Chat request failed',
+      });
     }
 
     const payload = await response.json();
@@ -60,6 +63,9 @@ export default async function handler(req, res) {
       reply: reply || 'I heard you, but I need one more try to answer cleanly.',
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message || 'Chat request failed' });
+    return res.status(500).json({
+      error: 'Monique live chat failed',
+      details: error.message || 'Chat request failed',
+    });
   }
 }
