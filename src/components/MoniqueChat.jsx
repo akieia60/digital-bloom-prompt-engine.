@@ -14,15 +14,15 @@ import {
   Pause,
 } from 'lucide-react';
 
+import { supabase } from '../lib/supabase';
+
 const INITIAL_MESSAGE = {
-  id: 1,
+  id: '1',
   type: 'monique',
   content:
-    "Monique is online. I know Digital Bloom, your prompt library, and the command-center workflow. Talk to me normally — I’ll keep it short, useful, and voice-ready.",
+    "Monique is online. I am now wired directly into OpenClaw via Supabase Sync! Talk to me normally — I’ll keep it short, useful, and voice-ready.",
   timestamp: new Date().toLocaleTimeString(),
 };
-
-const LIVE_CHAT_FAILURE_MESSAGE = 'Live Monique chat is not responding yet. This screen is still not connected to your real assistant brain, so I need to finish repairing the command-center chat route.';
 
 function cleanForSpeech(text) {
   return text
@@ -33,28 +33,22 @@ function cleanForSpeech(text) {
     .trim();
 }
 
-async function requestChatReply(input) {
+async function sendChatCommand(input) {
   const trimmed = input.trim();
   if (!trimmed) return null;
 
   try {
-    const response = await fetch('/api/monique-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: trimmed }),
-    });
+    const { data: userMessage, error } = await supabase
+      .from('monique_chat')
+      .insert({ role: 'user', content: trimmed, status: 'pending' })
+      .select()
+      .single();
 
-    if (!response.ok) {
-      const payload = await response.json().catch(() => ({}));
-      const details = payload?.details ? ` ${payload.details}` : '';
-      throw new Error((payload?.error || 'Chat request failed') + details);
-    }
-
-    const payload = await response.json();
-    return payload?.reply?.trim() || null;
+    if (error) throw error;
+    return userMessage.id;
   } catch (error) {
-    console.error('Monique live chat failed:', error);
-    return LIVE_CHAT_FAILURE_MESSAGE;
+    console.error('Monique chat push failed:', error);
+    return null;
   }
 }
 
@@ -78,6 +72,48 @@ export default function MoniqueChat() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  const autoPlayRef = useRef(autoPlay);
+  const audioEnabledRef = useRef(audioEnabled);
+
+  useEffect(() => {
+    autoPlayRef.current = autoPlay;
+    audioEnabledRef.current = audioEnabled;
+  }, [autoPlay, audioEnabled]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('monique_chat_ui')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'monique_chat', filter: 'role=eq.monique' },
+        async (payload) => {
+          const reply = payload.new;
+          const moniqueMessage = {
+            id: reply.id,
+            type: 'monique',
+            content: reply.content,
+            timestamp: new Date(reply.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === moniqueMessage.id)) return prev;
+            return [...prev, moniqueMessage];
+          });
+          setIsTyping(false);
+
+          if (autoPlayRef.current && audioEnabledRef.current && moniqueMessage.content) {
+            await speakMessage(moniqueMessage.content, moniqueMessage.id);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -224,10 +260,10 @@ export default function MoniqueChat() {
     if (!inputValue.trim() || isTyping) return;
 
     const userMessage = {
-      id: Date.now(),
+      id: Date.now().toString(),
       type: 'user',
       content: inputValue.trim(),
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -235,19 +271,18 @@ export default function MoniqueChat() {
     setIsTyping(true);
 
     try {
-      const reply = await requestChatReply(userMessage.content);
-      const moniqueMessage = {
-        id: Date.now() + 1,
-        type: 'monique',
-        content: reply || 'I heard you. Try that again and I’ll keep going.',
-        timestamp: new Date().toLocaleTimeString(),
-      };
-
-      setMessages((prev) => [...prev, moniqueMessage]);
-      setIsTyping(false);
-
-      if (autoPlay && audioEnabled && moniqueMessage.content) {
-        await speakMessage(moniqueMessage.content, moniqueMessage.id);
+      const messageId = await sendChatCommand(userMessage.content);
+      if (!messageId) {
+        setIsTyping(false);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString() + 'err',
+            type: 'monique',
+            content: 'Connection to the OpenClaw bridge failed. Ensure the daemon is running.',
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          },
+        ]);
       }
     } catch (error) {
       console.error('Error sending message:', error);
