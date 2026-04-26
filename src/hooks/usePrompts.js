@@ -1,6 +1,24 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
+// The shared `prompts` table on the website Supabase stores rows as
+// { cat, title, scenes:[{label, prompt}] }, but the PWA's UI expects
+// { category, title, text }. Map at the boundary so the UI never sees
+// undefined fields (which previously crashed Dashboard with
+// `category.toLowerCase()` on undefined → blank screen).
+function adaptRow(row) {
+  if (!row) return row;
+  const scenes = Array.isArray(row.scenes) ? row.scenes : [];
+  const text = scenes.length
+    ? scenes.map(s => (s?.label ? `${s.label}\n${s.prompt ?? ''}` : (s?.prompt ?? ''))).join('\n\n')
+    : (row.text ?? '');
+  return {
+    ...row,
+    category: row.category ?? row.cat ?? 'Uncategorized',
+    text,
+  };
+}
+
 export function usePrompts() {
   const [prompts, setPrompts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,11 +33,11 @@ export function usePrompts() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'prompts' }, payload => {
         console.log('Realtime change received!', payload);
         if (payload.eventType === 'INSERT') {
-          setPrompts(current => [payload.new, ...current]);
+          setPrompts(current => [adaptRow(payload.new), ...current]);
         } else if (payload.eventType === 'DELETE') {
           setPrompts(current => current.filter(p => p.id !== payload.old.id));
         } else if (payload.eventType === 'UPDATE') {
-          setPrompts(current => current.map(p => p.id === payload.new.id ? payload.new : p));
+          setPrompts(current => current.map(p => p.id === payload.new.id ? adaptRow(payload.new) : p));
         }
       })
       .subscribe();
@@ -35,10 +53,11 @@ export function usePrompts() {
       const { data, error } = await supabase
         .from('prompts')
         .select('*')
+        .or('is_deleted.is.null,is_deleted.eq.false')
         .order('created_at', { ascending: false });
-        
+
       if (error) throw error;
-      setPrompts(data || []);
+      setPrompts((data || []).map(adaptRow));
     } catch (error) {
       console.error('Error fetching prompts:', error);
     } finally {
