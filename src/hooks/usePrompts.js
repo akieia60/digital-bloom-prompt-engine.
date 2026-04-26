@@ -1,22 +1,42 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-// The shared `prompts` table on the website Supabase stores rows as
-// { cat, title, scenes:[{label, prompt}] }, but the PWA's UI expects
-// { category, title, text }. Map at the boundary so the UI never sees
-// undefined fields (which previously crashed Dashboard with
-// `category.toLowerCase()` on undefined → blank screen).
-function adaptRow(row) {
-  if (!row) return row;
+// Each row in the website Supabase `prompts` table is a multi-scene story:
+//   { id, cat, title, scenes:[{ label, prompt }, ...] }
+// The PWA's UI is one card per row with a single Copy button. To make
+// each scene independently copyable, expand one DB row into N
+// "scene-rows" — one per scene — at the boundary. Composite ids keep
+// React keys unique while still letting realtime DELETE/UPDATE find
+// every scene-row that came from the same parent.
+function expandRow(row) {
+  if (!row) return [];
+  const category = row.category ?? row.cat ?? 'Uncategorized';
   const scenes = Array.isArray(row.scenes) ? row.scenes : [];
-  const text = scenes.length
-    ? scenes.map(s => (s?.label ? `${s.label}\n${s.prompt ?? ''}` : (s?.prompt ?? ''))).join('\n\n')
-    : (row.text ?? '');
-  return {
-    ...row,
-    category: row.category ?? row.cat ?? 'Uncategorized',
-    text,
-  };
+
+  if (scenes.length === 0) {
+    return [{
+      ...row,
+      id: row.id,
+      parentId: row.id,
+      category,
+      title: row.title ?? 'Untitled',
+      text: row.text ?? '',
+    }];
+  }
+
+  return scenes.map((scene, idx) => {
+    const label = scene?.label?.trim() || `Clip ${idx + 1}`;
+    const baseTitle = row.title ?? 'Untitled';
+    return {
+      id: `${row.id}__${idx}`,
+      parentId: row.id,
+      sceneIndex: idx,
+      category,
+      title: `${baseTitle} — ${label}`,
+      text: scene?.prompt ?? '',
+      created_at: row.created_at,
+    };
+  });
 }
 
 export function usePrompts() {
@@ -24,20 +44,22 @@ export function usePrompts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initial fetch
     fetchPrompts();
 
-    // Set up realtime subscription
     const subscription = supabase
       .channel('prompts_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'prompts' }, payload => {
-        console.log('Realtime change received!', payload);
         if (payload.eventType === 'INSERT') {
-          setPrompts(current => [adaptRow(payload.new), ...current]);
+          setPrompts(current => [...expandRow(payload.new), ...current]);
         } else if (payload.eventType === 'DELETE') {
-          setPrompts(current => current.filter(p => p.id !== payload.old.id));
+          const removedId = payload.old?.id;
+          setPrompts(current => current.filter(p => p.parentId !== removedId));
         } else if (payload.eventType === 'UPDATE') {
-          setPrompts(current => current.map(p => p.id === payload.new.id ? adaptRow(payload.new) : p));
+          const updatedId = payload.new?.id;
+          setPrompts(current => {
+            const without = current.filter(p => p.parentId !== updatedId);
+            return [...expandRow(payload.new), ...without];
+          });
         }
       })
       .subscribe();
@@ -57,7 +79,7 @@ export function usePrompts() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPrompts((data || []).map(adaptRow));
+      setPrompts((data || []).flatMap(expandRow));
     } catch (error) {
       console.error('Error fetching prompts:', error);
     } finally {
@@ -66,19 +88,21 @@ export function usePrompts() {
   };
 
   const addPrompt = async (newPrompt) => {
-    // Optimistic UI update (optional, but good for speed)
     const tempId = Date.now().toString();
-    const optimisticPrompt = { id: tempId, ...newPrompt, created_at: new Date().toISOString() };
-    setPrompts([optimisticPrompt, ...prompts]);
+    const optimistic = {
+      id: tempId,
+      parentId: tempId,
+      category: newPrompt.category ?? 'Uncategorized',
+      title: newPrompt.title ?? 'Untitled',
+      text: newPrompt.text ?? '',
+      created_at: new Date().toISOString(),
+    };
+    setPrompts(current => [optimistic, ...current]);
 
     try {
-      const { error } = await supabase
-        .from('prompts')
-        .insert([newPrompt]);
-        
+      const { error } = await supabase.from('prompts').insert([newPrompt]);
       if (error) {
-        // Revert on error
-        setPrompts(prompts.filter(p => p.id !== tempId));
+        setPrompts(current => current.filter(p => p.id !== tempId));
         console.error('Error saving prompt:', error);
       }
     } catch (error) {
@@ -86,19 +110,19 @@ export function usePrompts() {
     }
   };
 
-  const deletePrompt = async (id) => {
-    // Optimistic update
+  // The trash icon is rendered on each scene-row, but a "prompt" in the DB
+  // is the whole multi-scene parent. Deleting one scene means deleting the
+  // whole parent row (and all its sibling scene-rows from the UI).
+  const deletePrompt = async (sceneRowId) => {
+    const target = prompts.find(p => p.id === sceneRowId);
+    const parentId = target?.parentId ?? sceneRowId;
+
     const previousPrompts = [...prompts];
-    setPrompts(prompts.filter(p => p.id !== id));
+    setPrompts(current => current.filter(p => p.parentId !== parentId));
 
     try {
-      const { error } = await supabase
-        .from('prompts')
-        .delete()
-        .eq('id', id);
-        
+      const { error } = await supabase.from('prompts').delete().eq('id', parentId);
       if (error) {
-        // Revert on error
         setPrompts(previousPrompts);
         console.error('Error deleting prompt:', error);
       }
