@@ -19,6 +19,13 @@
       "schedule": "0 9 * * *"
     }
   ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://digitalbloom.store/prompt-engine.html",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
